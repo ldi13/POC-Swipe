@@ -118,8 +118,8 @@ class ViewController: UIViewController, DraggableViewDelegate
         // Recover draggable view + Animation
         if let draggableView = self.draggableViews.first
         {
-            var finishPoint = CGPointMake(600, draggableView.center.y)
-            UIView.animateWithDuration(0.3, animations: {
+            var finishPoint = CGPointMake(2 * UIScreen.mainScreen().bounds.size.width, draggableView.center.y)
+            UIView.animateWithDuration(1, animations: {
                 draggableView.center = finishPoint
                 draggableView.transform = CGAffineTransformMakeRotation(1)
                 }, completion: {
@@ -135,8 +135,8 @@ class ViewController: UIViewController, DraggableViewDelegate
         // Recover draggable view + Animation
         if let draggableView = self.draggableViews.first
         {
-            var finishPoint = CGPointMake(-600, draggableView.center.y)
-            UIView.animateWithDuration(0.3, animations: {
+            var finishPoint = CGPointMake(-UIScreen.mainScreen().bounds.size.width, draggableView.center.y)
+            UIView.animateWithDuration(1, animations: {
                 draggableView.center = finishPoint
                 draggableView.transform = CGAffineTransformMakeRotation(-1)
                 }, completion: {

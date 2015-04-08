@@ -121,30 +121,28 @@ class DraggableView: UIView
     //%%% called when a swipe exceeds the ACTION_MARGIN to the right
     func rightAction()
     {
-        var finishPoint = CGPointMake(500, 2 * self.yFromCenter + self.originalPoint.y)
+        var finishPoint = CGPointMake(2 * UIScreen.mainScreen().bounds.width, self.yFromCenter + self.originalPoint.y)
         
         UIView.animateWithDuration(0.3, animations: {
+                println(self.center)
+                println(finishPoint)
                 self.center = finishPoint
             }, completion: {
                     _ in
-                        self.removeFromSuperview()
+                        self.draggableViewDelegate.offerSwipedRight()
         })
-        
-        self.draggableViewDelegate.offerSwipedRight()
     }
     
     //%%% called when a swipe exceeds the ACTION_MARGIN to the right
     func leftAction()
     {
-        var finishPoint = CGPointMake(-500, 2 * yFromCenter + self.originalPoint.y)
+        var finishPoint = CGPointMake(-UIScreen.mainScreen().bounds.width, yFromCenter + self.originalPoint.y)
         
         UIView.animateWithDuration(0.3, animations: {
             self.center = finishPoint
             }, completion: {
                 _ in
-                    self.removeFromSuperview()
+                    self.draggableViewDelegate.offerSwipedLeft()
         })
-        
-        self.draggableViewDelegate.offerSwipedLeft()
     }
 }
