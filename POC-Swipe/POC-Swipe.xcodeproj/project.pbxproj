@@ -168,9 +168,12 @@
 				TargetAttributes = {
 					4B5A831A1ACD702A0074BBEE = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = S7HY56XG6J;
+						LastSwiftMigration = 0830;
 					};
 					4B5A832F1ACD702A0074BBEE = {
 						CreatedOnToolsVersion = 6.2;
+						LastSwiftMigration = 0830;
 						TestTargetID = 4B5A831A1ACD702A0074BBEE;
 					};
 				};
@@ -346,9 +349,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = S7HY56XG6J;
 				INFOPLIST_FILE = "POC-Swipe/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -356,9 +361,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = S7HY56XG6J;
 				INFOPLIST_FILE = "POC-Swipe/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -377,6 +384,7 @@
 				INFOPLIST_FILE = "POC-SwipeTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/POC-Swipe.app/POC-Swipe";
 			};
 			name = Debug;
@@ -392,6 +400,7 @@
 				INFOPLIST_FILE = "POC-SwipeTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/POC-Swipe.app/POC-Swipe";
 			};
 			name = Release;

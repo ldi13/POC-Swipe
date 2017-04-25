@@ -29,9 +29,9 @@ class ViewController: UIViewController, DraggableViewDelegate
         super.didReceiveMemoryWarning()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        println(self.draggableViews.count)
+        print(self.draggableViews.count)
     }
     
     func setUp()
@@ -39,39 +39,39 @@ class ViewController: UIViewController, DraggableViewDelegate
         self.containerView.autoresizesSubviews = true
         self.offers = ["first", "second", "third", "fourth", "fifth"]
         self.draggableViews = [DraggableView]()
-        self.leftButton.addTarget(self, action: Selector("cancelOffer"), forControlEvents: UIControlEvents.TouchUpInside)
-        self.rightButton.addTarget(self, action: Selector("validateOffer"), forControlEvents: UIControlEvents.TouchUpInside)
+        self.leftButton.addTarget(self, action: Selector("cancelOffer"), for: UIControlEvents.touchUpInside)
+        self.rightButton.addTarget(self, action: Selector("validateOffer"), for: UIControlEvents.touchUpInside)
     }
     
     func loadOffers()
     {
         //%%% displays the small number of loaded cards dictated by MAX_BUFFER_SIZE so that not all the cards
         // are showing at once and clogging a ton of data
-        for var i = 0; i < self.MAX_BUFFER_SIZE; i++ {
+        for i in 0 ..< self.MAX_BUFFER_SIZE {
             self.addView(i)
         }
     }
     
-    func instantiateOfferViewController(colorLabel: String) -> RandomColorViewController
+    func instantiateOfferViewController(_ colorLabel: String) -> RandomColorViewController
     {
-        var offerViewController = self.storyboard?.instantiateViewControllerWithIdentifier("randomColorViewController") as RandomColorViewController
+        var offerViewController = self.storyboard?.instantiateViewController(withIdentifier: "randomColorViewController") as! RandomColorViewController
         offerViewController.colorLabelText = colorLabel
         
         return offerViewController
     }
     
-    func addView(index: Int)
+    func addView(_ index: Int)
     {
         // Draggable view
         var draggableView = DraggableView(frame: self.containerView.frame)
-        draggableView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        draggableView.autoresizingMask = [UIViewAutoresizing.flexibleHeight, UIViewAutoresizing.flexibleWidth]
         draggableView.draggableViewDelegate = self
         
         self.draggableViews.append(draggableView)
-        
+
         // Draggable view inside containerView
         if self.containerView.subviews.count > 0 {
-            self.containerView.insertSubview(draggableView, belowSubview: self.containerView.subviews.last as UIView)
+            self.containerView.insertSubview(draggableView, belowSubview: self.containerView.subviews.last as! UIView)
         }
         
         else {
@@ -81,28 +81,28 @@ class ViewController: UIViewController, DraggableViewDelegate
         // Offer View Controller
         var offerViewController = self.instantiateOfferViewController(self.offers[index])
         var offerView = offerViewController.view
-        offerView.frame = self.containerView.frame
+        offerView?.frame = self.containerView.frame
         
         // Offer View Controller inside childViewController stack
         self.addChildViewController(offerViewController)
-        offerViewController.didMoveToParentViewController(self)
+        offerViewController.didMove(toParentViewController: self)
         
         // Offer View into draggable view
-        draggableView.addSubview(offerView)
+        draggableView.addSubview(offerView!)
     }
     
     func updateContainerView()
     {
         if self.offers.count > 0
         {
-            self.offers.removeAtIndex(0)
+            self.offers.remove(at: 0)
             
             var draggableView = self.draggableViews.first
             draggableView!.removeFromSuperview()
-            self.draggableViews.removeAtIndex(0)
+            self.draggableViews.remove(at: 0)
             
             var childViewControllerToRemove = self.childViewControllers[0] as UIViewController
-            childViewControllerToRemove.willMoveToParentViewController(self)
+            childViewControllerToRemove.willMove(toParentViewController: self)
             childViewControllerToRemove.view.removeFromSuperview()
             childViewControllerToRemove.removeFromParentViewController()
         
@@ -118,10 +118,10 @@ class ViewController: UIViewController, DraggableViewDelegate
         // Recover draggable view + Animation
         if let draggableView = self.draggableViews.first
         {
-            var finishPoint = CGPointMake(2 * UIScreen.mainScreen().bounds.size.width, draggableView.center.y)
-            UIView.animateWithDuration(1, animations: {
+            var finishPoint = CGPoint(x: 2 * UIScreen.main.bounds.size.width, y: draggableView.center.y)
+            UIView.animate(withDuration: 1, animations: {
                 draggableView.center = finishPoint
-                draggableView.transform = CGAffineTransformMakeRotation(1)
+                draggableView.transform = CGAffineTransform(rotationAngle: 1)
                 }, completion: {
                     _ in
                         self.updateContainerView()
@@ -135,10 +135,10 @@ class ViewController: UIViewController, DraggableViewDelegate
         // Recover draggable view + Animation
         if let draggableView = self.draggableViews.first
         {
-            var finishPoint = CGPointMake(-UIScreen.mainScreen().bounds.size.width, draggableView.center.y)
-            UIView.animateWithDuration(1, animations: {
+            var finishPoint = CGPoint(x: -UIScreen.main.bounds.size.width, y: draggableView.center.y)
+            UIView.animate(withDuration: 1, animations: {
                 draggableView.center = finishPoint
-                draggableView.transform = CGAffineTransformMakeRotation(-1)
+                draggableView.transform = CGAffineTransform(rotationAngle: -1)
                 }, completion: {
                     _ in
                         self.updateContainerView()

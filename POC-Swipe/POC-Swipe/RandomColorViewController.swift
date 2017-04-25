@@ -18,7 +18,7 @@ class RandomColorViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     deinit {
-        println("deinit")
+        print("deinit")
     }
     
     override func didReceiveMemoryWarning() {
@@ -26,17 +26,17 @@ class RandomColorViewController: UIViewController, UITableViewDataSource, UITabl
         // Dispose of any resources that can be recreated.
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 25
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        var tableViewCell = tableView.dequeueReusableCellWithIdentifier("randomColorCell") as UITableViewCell
+        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: "randomColorCell") as! UITableViewCell
         
         let red = CGFloat(arc4random() % 255)
         let green = CGFloat(arc4random() % 255)
@@ -47,7 +47,7 @@ class RandomColorViewController: UIViewController, UITableViewDataSource, UITabl
         return tableViewCell
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
 }

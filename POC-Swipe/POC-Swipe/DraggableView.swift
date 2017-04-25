@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 protocol DraggableViewDelegate: class
 {
@@ -33,8 +57,8 @@ class DraggableView: UIView
     var panGestureRecognizer: UIPanGestureRecognizer!
     var originalPoint: CGPoint!
     
-    private var xFromCenter: CGFloat!
-    private var yFromCenter: CGFloat!
+    fileprivate var xFromCenter: CGFloat!
+    fileprivate var yFromCenter: CGFloat!
     
     
     // MARK: UIView lifecycle methods
@@ -53,19 +77,19 @@ class DraggableView: UIView
     
     // MARK: Custom methods
     
-    func beingDragged(sender: UIPanGestureRecognizer)
+    func beingDragged(_ sender: UIPanGestureRecognizer)
     {
-        self.xFromCenter = sender.translationInView(self).x //%%% positive for right swipe, negative for left
-        self.yFromCenter = sender.translationInView(self).y //%%% positive for up, negative for down
+        self.xFromCenter = sender.translation(in: self).x //%%% positive for right swipe, negative for left
+        self.yFromCenter = sender.translation(in: self).y //%%% positive for up, negative for down
         
         switch (sender.state)
         {
             //%%% just started swiping
-            case UIGestureRecognizerState.Began:
+            case UIGestureRecognizerState.began:
                 self.originalPoint = self.center
             
             //%%% in the middle of a swipe
-            case UIGestureRecognizerState.Changed:
+            case UIGestureRecognizerState.changed:
                 //%%% dictates rotation (see ROTATION_MAX and ROTATION_STRENGTH for details)
                 var rotationStrength = min(self.xFromCenter / self.ROTATION_STRENGTH, self.ROTATION_MAX)
                 
@@ -77,20 +101,20 @@ class DraggableView: UIView
                 var scale = max(CGFloat(1) - CGFloat(fabsfValue) / self.SCALE_STRENGTH, self.SCALE_MAX)
                 
                 //%%% move the object's center by center + gesture coordinate
-                self.center = CGPointMake(self.originalPoint.x + self.xFromCenter, self.originalPoint.y + self.yFromCenter);
+                self.center = CGPoint(x: self.originalPoint.x + self.xFromCenter, y: self.originalPoint.y + self.yFromCenter);
                 
                 //%%% rotate by certain amount
-                var transform = CGAffineTransformMakeRotation(rotationAngle)
+                var transform = CGAffineTransform(rotationAngle: rotationAngle)
 
                 //%%% scale by certain amount
-                var scaleTransform = CGAffineTransformScale(transform, scale, scale)
+                var scaleTransform = transform.scaledBy(x: scale, y: scale)
 
                 //%%% apply transformations
                 self.transform = scaleTransform
 //                [self updateOverlay:xFromCenter]
             
             //%%% let go of the card
-            case UIGestureRecognizerState.Ended:
+            case UIGestureRecognizerState.ended:
                 self.afterSwipeAction()
             
             default:
@@ -111,9 +135,9 @@ class DraggableView: UIView
         else
         {
             //%%% resets the card
-            UIView.animateWithDuration(0.3, animations: {
+            UIView.animate(withDuration: 0.3, animations: {
                 self.center = self.originalPoint
-                self.transform = CGAffineTransformMakeRotation(0)
+                self.transform = CGAffineTransform(rotationAngle: 0)
             })
         }
     }
@@ -121,11 +145,11 @@ class DraggableView: UIView
     //%%% called when a swipe exceeds the ACTION_MARGIN to the right
     func rightAction()
     {
-        var finishPoint = CGPointMake(2 * UIScreen.mainScreen().bounds.width, self.yFromCenter + self.originalPoint.y)
+        var finishPoint = CGPoint(x: 2 * UIScreen.main.bounds.width, y: self.yFromCenter + self.originalPoint.y)
         
-        UIView.animateWithDuration(0.3, animations: {
-                println(self.center)
-                println(finishPoint)
+        UIView.animate(withDuration: 0.3, animations: {
+                print(self.center)
+                print(finishPoint)
                 self.center = finishPoint
             }, completion: {
                     _ in
@@ -136,9 +160,9 @@ class DraggableView: UIView
     //%%% called when a swipe exceeds the ACTION_MARGIN to the right
     func leftAction()
     {
-        var finishPoint = CGPointMake(-UIScreen.mainScreen().bounds.width, yFromCenter + self.originalPoint.y)
+        var finishPoint = CGPoint(x: -UIScreen.main.bounds.width, y: yFromCenter + self.originalPoint.y)
         
-        UIView.animateWithDuration(0.3, animations: {
+        UIView.animate(withDuration: 0.3, animations: {
             self.center = finishPoint
             }, completion: {
                 _ in
