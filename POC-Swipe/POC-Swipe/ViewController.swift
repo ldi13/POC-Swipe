@@ -37,6 +37,7 @@ class ViewController: UIViewController, DraggableViewDelegate
     func setUp()
     {
         self.containerView.autoresizesSubviews = true
+			self.containerView.clipsToBounds = true
         self.offers = ["first", "second", "third", "fourth", "fifth"]
         self.draggableViews = [DraggableView]()
         self.leftButton.addTarget(self, action: Selector("cancelOffer"), for: UIControlEvents.touchUpInside)
@@ -149,11 +150,11 @@ class ViewController: UIViewController, DraggableViewDelegate
     
     // MARK: DraggableViewDelegate methods
     
-    func offerSwipedLeft() {
+    func onSwipedLeft() {
         self.updateContainerView()
     }
     
-    func offerSwipedRight() {
+    func onSwipedRight() {
         self.updateContainerView()
     }
 }
